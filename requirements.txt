@@ -10,3 +10,4 @@ quantstats
 plotly
 IPython
 gspread
+oauth2client
