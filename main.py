@@ -1,15 +1,24 @@
-import streamlit
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.os_manager import ChromeType
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import streamlit as st
 import os
 import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Define the scope for Google Sheets API
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
+client = gspread.authorize(creds)
+
+# Get the spreadsheet using the provided URL
+spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/1-kcJNtrhkU5g_rqRFigvIHVOcP-JGo1cvXYDlpZJsyo/edit?gid=0#gid=0')
 
 raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
             "Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
@@ -52,14 +61,12 @@ def create_driver():
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-
     options.add_experimental_option("prefs", {
         "download.default_directory": "/tmp",
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
     })
-
     return webdriver.Chrome(
         service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
         options=options,
@@ -140,47 +147,67 @@ def login_and_navigate(driver, url_list, keys_list):
             df = pd.read_csv(file)
             dataframes_list.append((file, df))
         except Exception as e:
-            streamlit.write(f"Error reading {file}: {e}")
+            st.write(f"Error reading {file}: {e}")
 
     return dataframes_list
 
+def write_to_google_sheet(dataframes):
+    sheet = spreadsheet.get_worksheet(0)  # Select the first sheet
+
+    # Clear the existing content
+    sheet.clear()
+
+    for file, df in dataframes:
+        st.write(f"Writing {file} to Google Sheets...")
+        # Assuming that each DataFrame has the same structure
+        sheet.append_row([file])  # Add the filename in a new row as a header or identifier
+
+        # Add the DataFrame to Google Sheets
+        for row in df.values.tolist():
+            sheet.append_row(row)
+
 def main():
-    streamlit.title("Smallcase Data Fetcher")
+    st.title("Smallcase Data Fetcher")
     
     # Get unique names for dropdown
     unique_names_list = get_unique_names()
     
     # Create selectbox before update button
-    selected_amc = streamlit.selectbox("Select AMC", unique_names_list)
+    selected_amc = st.selectbox("Select AMC", unique_names_list)
     
     # Update button
-    if streamlit.button("Update"):
+    if st.button("Update"):
         # Filter data based on selection
         filtered_results = filter_data(selected_amc)
         
         if not filtered_results:
-            streamlit.error("No results found for the selected AMC")
+            st.error("No results found for the selected AMC")
             return
         
         # Create lists for navigation
         url_list = list(filtered_results.values())
         keys_list = list(filtered_results.keys())
         
-        with streamlit.spinner("Fetching data..."):
+        with st.spinner("Fetching data..."):
             try:
                 driver = create_driver()
                 dataframes = login_and_navigate(driver, url_list, keys_list)
                 
-                streamlit.success("Data fetched successfully!")
+                st.success("Data fetched successfully!")
                 
                 # Display results
-                streamlit.write("### Downloaded Files:")
+                st.write("### Downloaded Files:")
                 for file, df in dataframes:
-                    streamlit.write(f"**File:** {os.path.basename(file)}")
-                    streamlit.dataframe(df)
-                    
+                    st.write(f"**File:** {os.path.basename(file)}")
+                    st.dataframe(df)
+
+                # Write data to Google Sheets
+                write_to_google_sheet(dataframes)
+                st.success("Data written to Google Sheets successfully!")
+                
             except Exception as e:
-                streamlit.error(f"An error occurred: {str(e)}")
+                st.error(f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
     main()
+
