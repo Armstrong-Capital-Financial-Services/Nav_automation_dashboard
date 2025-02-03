@@ -117,7 +117,7 @@ def login_and_navigate(driver):
             driver.execute_script("arguments[0].click();", button3)
 
             downloaded_file = wait_for_download( )
-            st.write(f"Downloaded file from Gear 6: {downloaded_file}")
+            streamlit.write(f"Downloaded file from Gear 6: {downloaded_file}")
             break
     for window in windows:
         driver.switch_to.window(window)
@@ -130,7 +130,7 @@ def login_and_navigate(driver):
               driver.execute_script("arguments[0].click();", button3)
 
             downloaded_file = wait_for_download( )
-            st.write(f"Downloaded file from Gear 5: {downloaded_file}")
+            streamlit.write(f"Downloaded file from Gear 5: {downloaded_file}")
 
     driver.quit()
 
