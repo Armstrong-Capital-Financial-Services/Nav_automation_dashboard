@@ -30,26 +30,20 @@ url_list = list(data_dict.values())
 keys_list = list(data_dict.keys())
 first_key= keys_list[0]
 keys_from_second = keys_list[1:]
-
 def create_driver():
     options = Options()
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless")  # ✅ Run in headless mode for Streamlit Cloud
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--headless")  # ✅ Required for Streamlit Cloud
+    options.add_argument("--no-sandbox")  # ✅ Helps in containerized environments
+    options.add_argument("--disable-dev-shm-usage")  # ✅ Prevent memory issues
+    options.add_argument("--disable-gpu")  
+    options.add_argument("--remote-debugging-port=9222")  # ✅ Helps in debugging
 
-    options.add_experimental_option("prefs", {
-        "download.default_directory": "/tmp",  # ✅ Use Streamlit Cloud temp directory
-        "download.prompt_for_download": False,
-        "download.directory_upgrade": True,
-        "safebrowsing.enabled": True
-    })
+    options.binary_location = "/usr/bin/chromium-browser"  # ✅ Set Chrome binary path
 
-    return webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),  # ✅ Removed ChromeType.CHROMIUM
-        options=options,
-    )
+    service = Service(ChromeDriverManager().install())
 
+    return webdriver.Chrome(service=service, options=options)
+  
 def wait_for_download( ):
     # Wait for download to complete
     time.sleep(2)  # Initial wait for download to start
