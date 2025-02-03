@@ -11,21 +11,17 @@ import os
 import pandas as pd
 from selenium.webdriver.common.by import By
 
-data_dict = {#"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
-             #"Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
-             #"Estee | Gulaq Gear 4": "https://estee.smallcase.com/smallcase/ESTMO_0007",
-            #"Finsharpe | Indian Bluechip Leaders": "https://finsharpe.smallcase.com/smallcase/FISHMO_0004",
-            # "Finsharpe | Large & Mid Cap Diversified": "https://finsharpe.smallcase.com/smallcase/FISHMO_0005",
-           # "https://wrightresearch.smallcase.com/smallcase/WRTMO_0018"
-             "Niveshaay | Green Energy":"https://niveshaay.smallcase.com/smallcase/NIVTR_0001",
-             "Niveshaay | Trends Trilogy":"https://niveshaay.smallcase.com/smallcase/NIVMO_0004",
-             "Niveshaay | Make In India" :"https://niveshaay.smallcase.com/smallcase/NIVNM_0001",
-             "Niveshaay | Mid and Small Cap Focused Portfolio":"https://niveshaay.smallcase.com/smallcase/NIVMO_0001",
-             "Niveshaay | Niveshaay Consumer Trends Portfolio":"https://niveshaay.smallcase.com/smallcase/NIVNM_0002"}
-url_list = list(data_dict.values())
+data_dict = {
+    "Niveshaay | Green Energy": "https://niveshaay.smallcase.com/smallcase/NIVTR_0001",
+    "Niveshaay | Trends Trilogy": "https://niveshaay.smallcase.com/smallcase/NIVMO_0004",
+    "Niveshaay | Make In India": "https://niveshaay.smallcase.com/smallcase/NIVNM_0001",
+    "Niveshaay | Mid and Small Cap Focused Portfolio": "https://niveshaay.smallcase.com/smallcase/NIVMO_0001",
+    "Niveshaay | Niveshaay Consumer Trends Portfolio": "https://niveshaay.smallcase.com/smallcase/NIVNM_0002"
+}
 
+url_list = list(data_dict.values())
 keys_list = list(data_dict.keys())
-first_key= keys_list[0]
+first_key = keys_list[0]
 keys_from_second = keys_list[1:]
 
 def create_driver():
@@ -46,11 +42,10 @@ def create_driver():
         service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
         options=options,
     )
-  
+
 def wait_for_download():
-    # Wait for download to complete
     time.sleep(2)  # Initial wait for download to start
-    downloaded_file = None
+    downloaded_files = []  # Store all downloaded files
     timeout = 13  # Maximum wait time in seconds
     start_time = time.time()
 
@@ -60,32 +55,14 @@ def wait_for_download():
         crdownload_files = [f for f in files if f.endswith('.crdownload')]
 
         if csv_files and not crdownload_files:
-            downloaded_file = os.path.join('/tmp', csv_files[0])
+            downloaded_files.extend([os.path.join('/tmp', f) for f in csv_files])
             break
 
         time.sleep(1)
 
-    return downloaded_file
-
-
-def switch_to_window_by_title(driver, title, timeout=10):
-    """
-    Switch to a window with the specified title
-    Returns True if successful, False otherwise
-    """
-    start_time = time.time()
-    while time.time() - start_time < timeout:
-        for window in driver.window_handles:
-            driver.switch_to.window(window)
-            if driver.title == title:
-                return True
-        time.sleep(1)
-    return False
-
+    return downloaded_files
 
 def login_and_navigate(driver):
-    # download_dir = os.path.join(os.getcwd(), "downloads")
-
     for url in url_list:
         driver.execute_script(f"window.open('{url}');")
         time.sleep(5)
@@ -93,34 +70,35 @@ def login_and_navigate(driver):
     # Get all window handles
     windows = driver.window_handles
 
-    # First find and process Gear 6
+    # Process the first key
     for window in windows:
         driver.switch_to.window(window)
-        current_handle = driver.current_window_handle
-        driver.window_handles.index(current_handle)
         if driver.title == first_key:
-            print("Processing Gear 6...")
+            print(f"Processing {first_key}...")
             time.sleep(5)
             button = driver.find_element(By.CLASS_NAME, "LockedSCPerformance__continue-btn__3Hvi-")
             driver.execute_script("arguments[0].click();", button)
 
             wait = WebDriverWait(driver, 10)
             button2 = wait.until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "KeyTermsAndDetails__action-cta__ohJ_L")))
+                EC.element_to_be_clickable((By.CLASS_NAME, "KeyTermsAndDetails__action-cta__ohJ_L"))
+            )
             button2.click()
 
             button3 = wait.until(
-                EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]")))
+                EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]"))
+            )
             driver.execute_script("arguments[0].click();", button3)
 
-            downloaded_file = wait_for_download()
-            if downloaded_file:
-                streamlit.write(f"Downloaded file from {first_key}: {downloaded_file}")
-                # Read and display the CSV content
-                df = pd.read_csv(downloaded_file)
-                streamlit.write(df)
+            downloaded_files = wait_for_download()
+            if downloaded_files:
+                streamlit.write(f"Downloaded files from {first_key}: {downloaded_files}")
+                for file in downloaded_files:
+                    df = pd.read_csv(file)
+                    streamlit.write(df)
             break
 
+    # Process remaining keys
     for window in windows:
         driver.switch_to.window(window)
         streamlit.write(f"Checking window title: {driver.title}")
@@ -128,18 +106,18 @@ def login_and_navigate(driver):
             if i in driver.title:
                 wait = WebDriverWait(driver, 10)
                 button3 = wait.until(
-                    EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]")))
+                    EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]"))
+                )
                 driver.execute_script("arguments[0].click();", button3)
 
-            downloaded_file = wait_for_download()
-            if downloaded_file:
-                streamlit.write(f"Downloaded file from {i}: {downloaded_file}")
-                # Read and display the CSV content
-                df = pd.read_csv(downloaded_file)
-                streamlit.write(df)
+                downloaded_files = wait_for_download()
+                if downloaded_files:
+                    streamlit.write(f"Downloaded files from {i}: {downloaded_files}")
+                    for file in downloaded_files:
+                        df = pd.read_csv(file)
+                        streamlit.write(df)
 
     driver.quit()
-
 
 def fetch_data():
     update_button = streamlit.button("Update")
@@ -147,7 +125,7 @@ def fetch_data():
         driver = create_driver()
         login_and_navigate(driver)
         streamlit.write("Data updated successfully")
-  
+
 if __name__ == "__main__":
     fetch_data()
 
