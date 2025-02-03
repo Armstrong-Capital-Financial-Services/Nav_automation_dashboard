@@ -121,7 +121,7 @@ def login_and_navigate(driver):
             break
     for window in windows:
         driver.switch_to.window(window)
-        st.write(f"Checking window title: {driver.title}")
+        streamlit.write(f"Checking window title: {driver.title}")
         for i in keys_from_second:
             if i in driver.title:
               wait = WebDriverWait(driver, 10)
