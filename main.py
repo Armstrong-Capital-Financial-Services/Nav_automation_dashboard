@@ -31,11 +31,11 @@ keys_from_second = keys_list[1:]
 def create_driver():
     options = Options()
     # Specify download directory - use an absolute path
-    download_dir = os.path.join(os.getcwd(), "downloads")
-    os.makedirs(download_dir, exist_ok=True)
+    #download_dir = os.path.join(os.getcwd(), "downloads")
+    #os.makedirs(download_dir, exist_ok=True)
 
     options.add_experimental_option("prefs", {
-        "download.default_directory": download_dir,
+        "download.default_directory": '/tmp',
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
@@ -55,12 +55,12 @@ def wait_for_download( ):
     start_time = time.time()
 
     while time.time() - start_time < timeout:
-        files = os.listdir('/temp')
+        files = os.listdir('/tmp')
         csv_files = [f for f in files if f.endswith('.csv')]
         crdownload_files = [f for f in files if f.endswith('.crdownload')]
 
         if csv_files and not crdownload_files:
-            downloaded_file = os.path.join('/temp', csv_files[0])
+            downloaded_file = os.path.join('/tmp', csv_files[0])
             break
 
         time.sleep(1)
