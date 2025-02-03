@@ -148,9 +148,9 @@ def login_and_navigate(driver, url_list, keys_list):
 
 def update_google_sheet(dataframes_list, spreadsheet_id, sheet_name_prefix):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("path/to/your/credentials.json", scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
     client = gspread.authorize(creds)
-    spreadsheet = client.open_by_key(spreadsheet_id)
+    spreadsheet = client.open("https://docs.google.com/spreadsheets/d/1-kcJNtrhkU5g_rqRFigvIHVOcP-JGo1cvXYDlpZJsyo/edit?gid=0#gid=0")
 
     for i, (file, df) in enumerate(dataframes_list):
         sheet_name = f"{sheet_name_prefix}_{i+1}"
