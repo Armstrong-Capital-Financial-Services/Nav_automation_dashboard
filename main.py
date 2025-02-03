@@ -9,6 +9,10 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import os
 from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
 data_dict = {#"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
              #"Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
@@ -27,26 +31,25 @@ keys_list = list(data_dict.keys())
 first_key= keys_list[0]
 keys_from_second = keys_list[1:]
 
-
 def create_driver():
     options = Options()
     options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
+    options.add_argument("--headless")  # ✅ Run in headless mode for Streamlit Cloud
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
     options.add_experimental_option("prefs", {
-        "download.default_directory": "/tmp",
+        "download.default_directory": "/tmp",  # ✅ Use Streamlit Cloud temp directory
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
     })
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROME).install()),
+    return webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),  # ✅ Removed ChromeType.CHROMIUM
         options=options,
     )
-    return driver
+
 def wait_for_download( ):
     # Wait for download to complete
     time.sleep(2)  # Initial wait for download to start
