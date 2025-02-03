@@ -36,17 +36,17 @@ def create_driver():
     options.add_argument("--disable-dev-shm-usage")
 
     options.add_experimental_option("prefs", {
-        "download.default_directory": "/tmp",  
+        "download.default_directory": "/tmp",
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
     })
 
-    return webdriver.Chrome(
-        service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROME).install()),
         options=options,
     )
-
+    return driver
 def wait_for_download( ):
     # Wait for download to complete
     time.sleep(2)  # Initial wait for download to start
