@@ -11,10 +11,53 @@ import os
 import pandas as pd
 from selenium.webdriver.common.by import By
 
-data_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
+raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
              "Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
-             "Estee | Gulaq Gear 4": "https://estee.smallcase.com/smallcase/ESTMO_0007"
-}
+             "Estee | Gulaq Gear 4": "https://estee.smallcase.com/smallcase/ESTMO_0007",
+            "Finsharpe | Indian Bluechip Leaders": "https://finsharpe.smallcase.com/smallcase/FISHMO_0004",
+             "Finsharpe | Large & Mid Cap Diversified": "https://finsharpe.smallcase.com/smallcase/FISHMO_0005",
+            "Wright Research | Momentum":"https://wrightresearch.smallcase.com/smallcase/WRTMO_0018", # Corrected the missing name
+             "Niveshaay | Green Energy":"https://niveshaay.smallcase.com/smallcase/NIVTR_0001",
+             "Niveshaay | Trends Trilogy":"https://niveshaay.smallcase.com/smallcase/NIVMO_0004",
+             "Niveshaay | Make In India" :"https://niveshaay.smallcase.com/smallcase/NIVNM_0001",
+             "Niveshaay | Mid and Small Cap Focused Portfolio":"https://niveshaay.smallcase.com/smallcase/NIVMO_0001",
+             "Niveshaay | Niveshaay Consumer Trends Portfolio":"https://niveshaay.smallcase.com/smallcase/NIVNM_0002"}
+datadict={}
+# Extract unique names before the pipe "|"
+unique_names = set()
+for key in raw_dict:
+    if "|" in key:
+        name = key.split("|")[0].strip()  #strip() to remove leading/trailing spaces
+        unique_names.add(name)
+    else:  # Handle cases where "|" is missing (like Wright Research)
+        name = key.split("smallcase.com")[0].split("//")[1].strip() # Extract name from URL
+        unique_names.add(name)
+
+
+unique_names_list = sorted(list(unique_names)) # Convert to a sorted list for dropdown
+
+
+def filter_data(keyword):
+    filtered_data = {}
+    for key, value in raw_dict.items():
+        if "|" in key:
+            name = key.split("|")[0].strip()
+        else:
+            name = key.split("smallcase.com")[0].split("//")[1].strip()
+
+        if keyword.lower() in name.lower(): # Case-insensitive matching
+            filtered_data[key] = value
+    return filtered_data
+
+
+smallcase_amc_options=streamlit.selectbox(" ",unique_names_list)
+
+keyword = smallcase_amc_options
+filtered_results = filter_data(keyword)
+
+
+for key, value in filtered_results.items():
+    datadict[key]=value
 
 url_list = list(data_dict.values())
 keys_list = list(data_dict.keys())
