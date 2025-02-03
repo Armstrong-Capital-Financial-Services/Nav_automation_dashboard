@@ -9,3 +9,4 @@ openpyxl>=3.1.0
 quantstats
 plotly
 IPython
+gspread
