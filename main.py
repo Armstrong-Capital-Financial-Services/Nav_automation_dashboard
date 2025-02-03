@@ -142,6 +142,14 @@ def fetch_data():
       driver = create_driver()
       login_and_navigate(driver)
       streamlit.write("Data updated successfully")
+      if downloaded_file:
+            st.success(f"Downloaded: {os.path.basename(downloaded_file)}")
+
+            with open(downloaded_file, "rb") as f:
+                csv_data = f.read()
+
+            df = pd.read_csv(io.BytesIO(csv_data))
+            st.dataframe(df)  # Show data in Streamlit
 
 
 if __name__ == "__main__":
