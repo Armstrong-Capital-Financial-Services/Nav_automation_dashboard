@@ -12,17 +12,18 @@ import pandas as pd
 from selenium.webdriver.common.by import By
 
 data_dict = {
+    "Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
+    "Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
+    "Estee | Gulaq Gear 4": "https://estee.smallcase.com/smallcase/ESTMO_0007",
+    "Finsharpe | Indian Bluechip Leaders": "https://finsharpe.smallcase.com/smallcase/FISHMO_0004",
+    "Finsharpe | Large & Mid Cap Diversified": "https://finsharpe.smallcase.com/smallcase/FISHMO_0005",
+    "Wrightresearch | Smallcase": "https://wrightresearch.smallcase.com/smallcase/WRTMO_0018",
     "Niveshaay | Green Energy": "https://niveshaay.smallcase.com/smallcase/NIVTR_0001",
     "Niveshaay | Trends Trilogy": "https://niveshaay.smallcase.com/smallcase/NIVMO_0004",
     "Niveshaay | Make In India": "https://niveshaay.smallcase.com/smallcase/NIVNM_0001",
     "Niveshaay | Mid and Small Cap Focused Portfolio": "https://niveshaay.smallcase.com/smallcase/NIVMO_0001",
     "Niveshaay | Niveshaay Consumer Trends Portfolio": "https://niveshaay.smallcase.com/smallcase/NIVNM_0002"
 }
-
-url_list = list(data_dict.values())
-keys_list = list(data_dict.keys())
-first_key = keys_list[0]
-keys_from_second = keys_list[1:]
 
 def create_driver():
     options = Options()
@@ -32,7 +33,7 @@ def create_driver():
     options.add_argument("--disable-dev-shm-usage")
 
     options.add_experimental_option("prefs", {
-        "download.default_directory": "/tmp",  
+        "download.default_directory": "/tmp",
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
@@ -66,43 +67,41 @@ def login_and_navigate(driver):
     downloaded_file_list = []  # Store downloaded file paths
     dataframes_list = []  # Store DataFrames
 
-    for url in url_list:
-        driver.execute_script(f"window.open('{url}');")
-        time.sleep(5)
+    # Group URLs by AMC
+    amc_groups = {}
+    for key, url in data_dict.items():
+        amc = key.split(' | ')[0]
+        if amc not in amc_groups:
+            amc_groups[amc] = []
+        amc_groups[amc].append((key, url))
 
-    # Get all window handles
-    windows = driver.window_handles
+    for amc, key_url_pairs in amc_groups.items():
+        first_key, first_url = key_url_pairs[0]
+        remaining_keys_urls = key_url_pairs[1:]
 
-    # Process the first key
-    for window in windows:
-        driver.switch_to.window(window)
-        if driver.title == first_key:
-            print(f"Processing {first_key}...")
+        # Open all URLs in new tabs
+        for key, url in key_url_pairs:
+            driver.execute_script(f"window.open('{url}');")
             time.sleep(5)
-            button = driver.find_element(By.CLASS_NAME, "LockedSCPerformance__continue-btn__3Hvi-")
-            driver.execute_script("arguments[0].click();", button)
 
-            wait = WebDriverWait(driver, 10)
-            button2 = wait.until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "KeyTermsAndDetails__action-cta__ohJ_L"))
-            )
-            button2.click()
+        # Get all window handles
+        windows = driver.window_handles
 
-            button3 = wait.until(
-                EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]"))
-            )
-            driver.execute_script("arguments[0].click();", button3)
+        # Process the first key
+        for window in windows:
+            driver.switch_to.window(window)
+            if driver.title == first_key:
+                print(f"Processing {first_key}...")
+                time.sleep(5)
+                button = driver.find_element(By.CLASS_NAME, "LockedSCPerformance__continue-btn__3Hvi-")
+                driver.execute_script("arguments[0].click();", button)
 
-            downloaded_files = wait_for_download()
-            downloaded_file_list.extend(downloaded_files)  # Collect file paths
-            break
-
-    # Process remaining keys
-    for window in windows:
-        driver.switch_to.window(window)
-        for i in keys_from_second:
-            if i in driver.title:
                 wait = WebDriverWait(driver, 10)
+                button2 = wait.until(
+                    EC.element_to_be_clickable((By.CLASS_NAME, "KeyTermsAndDetails__action-cta__ohJ_L"))
+                )
+                button2.click()
+
                 button3 = wait.until(
                     EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]"))
                 )
@@ -110,6 +109,21 @@ def login_and_navigate(driver):
 
                 downloaded_files = wait_for_download()
                 downloaded_file_list.extend(downloaded_files)  # Collect file paths
+                break
+
+        # Process remaining keys
+        for window in windows:
+            driver.switch_to.window(window)
+            for key, url in remaining_keys_urls:
+                if key in driver.title:
+                    wait = WebDriverWait(driver, 10)
+                    button3 = wait.until(
+                        EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]"))
+                    )
+                    driver.execute_script("arguments[0].click();", button3)
+
+                    downloaded_files = wait_for_download()
+                    downloaded_file_list.extend(downloaded_files)  # Collect file paths
 
     driver.quit()
 
@@ -138,5 +152,4 @@ def fetch_data():
 
 if __name__ == "__main__":
     fetch_data()
-
 
