@@ -8,11 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import os
+import pandas as pd
 from selenium.webdriver.common.by import By
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
 
 data_dict = {#"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
              #"Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
@@ -30,6 +27,7 @@ url_list = list(data_dict.values())
 keys_list = list(data_dict.keys())
 first_key= keys_list[0]
 keys_from_second = keys_list[1:]
+
 def create_driver():
     options = Options()
     options.add_argument("--disable-gpu")
@@ -49,7 +47,7 @@ def create_driver():
         options=options,
     )
   
-def wait_for_download( ):
+def wait_for_download():
     # Wait for download to complete
     time.sleep(2)  # Initial wait for download to start
     downloaded_file = None
@@ -86,8 +84,7 @@ def switch_to_window_by_title(driver, title, timeout=10):
 
 
 def login_and_navigate(driver):
-
-    #download_dir = os.path.join(os.getcwd(), "downloads")
+    # download_dir = os.path.join(os.getcwd(), "downloads")
 
     for url in url_list:
         driver.execute_script(f"window.open('{url}');")
@@ -116,41 +113,41 @@ def login_and_navigate(driver):
                 EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]")))
             driver.execute_script("arguments[0].click();", button3)
 
-            downloaded_file = wait_for_download( )
-            streamlit.write(f"Downloaded file from Gear 6: {downloaded_file}")
+            downloaded_file = wait_for_download()
+            if downloaded_file:
+                streamlit.write(f"Downloaded file from {first_key}: {downloaded_file}")
+                # Read and display the CSV content
+                df = pd.read_csv(downloaded_file)
+                streamlit.write(df)
             break
+
     for window in windows:
         driver.switch_to.window(window)
         streamlit.write(f"Checking window title: {driver.title}")
         for i in keys_from_second:
             if i in driver.title:
-              wait = WebDriverWait(driver, 10)
-              button3 = wait.until(
-                EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]")))
-              driver.execute_script("arguments[0].click();", button3)
+                wait = WebDriverWait(driver, 10)
+                button3 = wait.until(
+                    EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]")))
+                driver.execute_script("arguments[0].click();", button3)
 
-            downloaded_file = wait_for_download( )
-            streamlit.write(f"Downloaded file from Gear 5: {downloaded_file}")
+            downloaded_file = wait_for_download()
+            if downloaded_file:
+                streamlit.write(f"Downloaded file from {i}: {downloaded_file}")
+                # Read and display the CSV content
+                df = pd.read_csv(downloaded_file)
+                streamlit.write(df)
 
     driver.quit()
 
 
-
 def fetch_data():
-    update_button=streamlit.button("Update")
+    update_button = streamlit.button("Update")
     if update_button:
-      driver = create_driver()
-      login_and_navigate(driver)
-      streamlit.write("Data updated successfully")
-      if downloaded_file:
-            st.success(f"Downloaded: {os.path.basename(downloaded_file)}")
-
-            with open(downloaded_file, "rb") as f:
-                csv_data = f.read()
-
-            df = pd.read_csv(io.BytesIO(csv_data))
-            st.dataframe(df)  # Show data in Streamlit
-
-
+        driver = create_driver()
+        login_and_navigate(driver)
+        streamlit.write("Data updated successfully")
+  
 if __name__ == "__main__":
     fetch_data()
+
