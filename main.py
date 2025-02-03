@@ -146,7 +146,7 @@ def login_and_navigate(driver, url_list, keys_list):
 
     return dataframes_list
 
-def update_google_sheet(dataframes_list, spreadsheet_id, sheet_name_prefix):
+def update_google_sheet(dataframes_list, sheet_name_prefix):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
     client = gspread.authorize(creds)
@@ -193,9 +193,8 @@ def main():
                     streamlit.dataframe(df)
 
                 # Update Google Sheets
-                spreadsheet_id = "your_spreadsheet_id"
                 sheet_name_prefix = "Data"
-                update_google_sheet(dataframes, spreadsheet_id, sheet_name_prefix)
+                update_google_sheet(dataframes, sheet_name_prefix)
                 streamlit.success("Google Sheets updated successfully!")
 
             except Exception as e:
