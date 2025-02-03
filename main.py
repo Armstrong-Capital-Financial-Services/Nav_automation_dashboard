@@ -55,7 +55,7 @@ def wait_for_download():
         crdownload_files = [f for f in files if f.endswith('.crdownload')]
 
         if csv_files and not crdownload_files:
-            downloaded_files.extend([os.path.join('/tmp', f) for f in csv_files])
+            downloaded_files = [os.path.join('/tmp', f) for f in csv_files]
             break
 
         time.sleep(1)
@@ -63,6 +63,9 @@ def wait_for_download():
     return downloaded_files
 
 def login_and_navigate(driver):
+    downloaded_file_list = []  # Store downloaded file paths
+    dataframes_list = []  # Store DataFrames
+
     for url in url_list:
         driver.execute_script(f"window.open('{url}');")
         time.sleep(5)
@@ -91,17 +94,12 @@ def login_and_navigate(driver):
             driver.execute_script("arguments[0].click();", button3)
 
             downloaded_files = wait_for_download()
-            if downloaded_files:
-                streamlit.write(f"Downloaded files from {first_key}: {downloaded_files}")
-                for file in downloaded_files:
-                    df = pd.read_csv(file)
-                    streamlit.write(df)
+            downloaded_file_list.extend(downloaded_files)  # Collect file paths
             break
 
     # Process remaining keys
     for window in windows:
         driver.switch_to.window(window)
-        streamlit.write(f"Checking window title: {driver.title}")
         for i in keys_from_second:
             if i in driver.title:
                 wait = WebDriverWait(driver, 10)
@@ -111,21 +109,34 @@ def login_and_navigate(driver):
                 driver.execute_script("arguments[0].click();", button3)
 
                 downloaded_files = wait_for_download()
-                if downloaded_files:
-                    streamlit.write(f"Downloaded files from {i}: {downloaded_files}")
-                    for file in downloaded_files:
-                        df = pd.read_csv(file)
-                        streamlit.write(df)
+                downloaded_file_list.extend(downloaded_files)  # Collect file paths
 
     driver.quit()
+
+    # Read all downloaded files and store DataFrames
+    for file in set(downloaded_file_list):  # Use `set` to remove duplicates
+        try:
+            df = pd.read_csv(file)
+            dataframes_list.append((file, df))  # Store (filename, DataFrame) tuple
+        except Exception as e:
+            streamlit.write(f"Error reading {file}: {e}")
+
+    return dataframes_list  # Return the list of DataFrames
 
 def fetch_data():
     update_button = streamlit.button("Update")
     if update_button:
         driver = create_driver()
-        login_and_navigate(driver)
+        dataframes = login_and_navigate(driver)
+
+        streamlit.write("### All Downloaded Files:")
+        for file, df in dataframes:
+            streamlit.write(f"**File:** {file}")
+            streamlit.dataframe(df)  # Display DataFrame in Streamlit
+
         streamlit.write("Data updated successfully")
 
 if __name__ == "__main__":
     fetch_data()
+
 
