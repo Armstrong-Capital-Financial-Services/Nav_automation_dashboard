@@ -30,12 +30,13 @@ keys_from_second = keys_list[1:]
 
 def create_driver():
     options = Options()
-    # Specify download directory - use an absolute path
-    #download_dir = os.path.join(os.getcwd(), "downloads")
-    #os.makedirs(download_dir, exist_ok=True)
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
     options.add_experimental_option("prefs", {
-        "download.default_directory": '/tmp',
+        "download.default_directory": "/tmp",  
         "download.prompt_for_download": False,
         "download.directory_upgrade": True,
         "safebrowsing.enabled": True
@@ -45,7 +46,6 @@ def create_driver():
         service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),
         options=options,
     )
-
 
 def wait_for_download( ):
     # Wait for download to complete
