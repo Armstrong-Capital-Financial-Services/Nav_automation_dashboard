@@ -116,7 +116,7 @@ def login_and_navigate(driver):
                 EC.presence_of_element_located((By.XPATH, "//button[contains(text(), 'Download Chart')]")))
             driver.execute_script("arguments[0].click();", button3)
 
-            downloaded_file = wait_for_download(download_dir)
+            downloaded_file = wait_for_download( )
             print(f"Downloaded file from Gear 6: {downloaded_file}")
             break
     for window in windows:
