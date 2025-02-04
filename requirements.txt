@@ -11,3 +11,4 @@ plotly
 IPython
 gspread
 oauth2client
+redis
