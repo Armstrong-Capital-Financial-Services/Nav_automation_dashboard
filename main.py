@@ -178,13 +178,14 @@ def main():
 
                 st.success("Data fetched successfully!")
 
-                # Connect to Redis
+                # Connect to Redis using secrets
+                redis_config = st.secrets["redis"]
                 r = redis.Redis(
-                    host='redis-16478.c305.ap-south-1-1.ec2.redis-cloud.com',
-                    port=16478,
+                    host=redis_config["host"],
+                    port=redis_config["port"],
                     decode_responses=True,
-                    username="default",
-                    password="YP0yOjZBchSTA7adbBvigPOpeh1doaAK",
+                    username=redis_config["username"],
+                    password=redis_config["password"],
                 )
 
                 # Display results and store in Redis
