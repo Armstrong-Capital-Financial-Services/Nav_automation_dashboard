@@ -1,4 +1,4 @@
-import streamlit
+mport streamlit
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -10,8 +10,6 @@ import time
 import os
 import pandas as pd
 from selenium.webdriver.common.by import By
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 
 raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO_0001",
             "Estee | Gulaq Gear 5": "https://estee.smallcase.com/smallcase/ESTMO_0002",
@@ -43,7 +41,7 @@ def filter_data(keyword):
             name = key.split("|")[0].strip()
         else:
             name = key.split("smallcase.com")[0].split("//")[1].strip()
-
+        
         if keyword.lower() in name.lower():
             filtered_data[key] = value
     return filtered_data
@@ -89,7 +87,7 @@ def wait_for_download():
 def login_and_navigate(driver, url_list, keys_list):
     downloaded_file_list = []
     dataframes_list = []
-
+    
     first_key = keys_list[0]
     keys_from_second = keys_list[1:]
 
@@ -146,59 +144,64 @@ def login_and_navigate(driver, url_list, keys_list):
 
     return dataframes_list
 
-def update_google_sheet(dataframes_list, sheet_name_prefix):
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(credentials, scope)
-    client = gspread.authorize(creds)
-    spreadsheet = client.open("https://docs.google.com/spreadsheets/d/1-kcJNtrhkU5g_rqRFigvIHVOcP-JGo1cvXYDlpZJsyo/edit?gid=0#gid=0")
-
-    for i, (file, df) in enumerate(dataframes_list):
-        sheet_name = f"{sheet_name_prefix}_{i+1}"
-        worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=df.shape[0]+1, cols=df.shape[1])
-        worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+import streamlit as st
+import os
+import redis
+import json
 
 def main():
-    streamlit.title("Smallcase Data Fetcher")
+    st.title("Smallcase Data Fetcher")
 
     # Get unique names for dropdown
     unique_names_list = get_unique_names()
 
     # Create selectbox before update button
-    selected_amc = streamlit.selectbox("Select AMC", unique_names_list)
+    selected_amc = st.selectbox("Select AMC", unique_names_list)
 
     # Update button
-    if streamlit.button("Update"):
+    if st.button("Update"):
         # Filter data based on selection
         filtered_results = filter_data(selected_amc)
 
         if not filtered_results:
-            streamlit.error("No results found for the selected AMC")
+            st.error("No results found for the selected AMC")
             return
 
         # Create lists for navigation
         url_list = list(filtered_results.values())
         keys_list = list(filtered_results.keys())
 
-        with streamlit.spinner("Fetching data..."):
+        with st.spinner("Fetching data..."):
             try:
                 driver = create_driver()
                 dataframes = login_and_navigate(driver, url_list, keys_list)
 
-                streamlit.success("Data fetched successfully!")
+                st.success("Data fetched successfully!")
 
-                # Display results
-                streamlit.write("### Downloaded Files:")
+                # Connect to Redis
+                r = redis.Redis(
+                    host='redis-16478.c305.ap-south-1-1.ec2.redis-cloud.com',
+                    port=16478,
+                    decode_responses=True,
+                    username="default",
+                    password="YP0yOjZBchSTA7adbBvigPOpeh1doaAK",
+                )
+
+                # Display results and store in Redis
+                st.write("### Downloaded Files:")
                 for file, df in dataframes:
-                    streamlit.write(f"**File:** {os.path.basename(file)}")
-                    streamlit.dataframe(df)
+                    st.write(f"**File:** {os.path.basename(file)}")
+                    st.dataframe(df)
 
-                # Update Google Sheets
-                sheet_name_prefix = "Data"
-                update_google_sheet(dataframes, sheet_name_prefix)
-                streamlit.success("Google Sheets updated successfully!")
+                    # Convert DataFrame to JSON string
+                    json_str = df.to_json(orient='records')
+
+                    # Store JSON string in Redis
+                    redis_key = f"dataframe:{os.path.basename(file)}"
+                    r.set(redis_key, json_str)
 
             except Exception as e:
-                streamlit.error(f"An error occurred: {str(e)}")
+                st.error(f"An error occurred: {str(e)}")
 
 if __name__ == "__main__":
     main()
