@@ -16,7 +16,7 @@ raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO
             "Estee | Gulaq Gear 4": "https://estee.smallcase.com/smallcase/ESTMO_0007",
             "Finsharpe | Indian Bluechip Leaders": "https://finsharpe.smallcase.com/smallcase/FISHMO_0004",
             "Finsharpe | Large & Mid Cap Diversified": "https://finsharpe.smallcase.com/smallcase/FISHMO_0005",
-            "Finsharpe | Mid & Small Cap Focus":'https://finsharpe.smallcase.com/smallcase/FISHMO_0008",
+            "Finsharpe | Mid & Small Cap Focus":"https://finsharpe.smallcase.com/smallcase/FISHMO_0008",
             #"Wright Research | Wright ⚡️ Momentum":"https://wrightresearch.smallcase.com/smallcase/WRTNM_0001",
             "Wright Research | Alpha Prime":"https://wrightresearch.smallcase.com/smallcase/WRTMO_0018",
             #"Wright Research | Wright 🏭 New India Manufacturing":"https://wrightresearch.smallcase.com/smallcase/WRTNM_0003",
