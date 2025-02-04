@@ -20,6 +20,8 @@ raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO
             "Wright Research | Wright ⚡️ Momentum":"https://wrightresearch.smallcase.com/smallcase/WRTNM_0001",
             "Wright Research | Alpha Prime":"https://wrightresearch.smallcase.com/smallcase/WRTMO_0018",
             "Wright Research | Wright 🏭 New India Manufacturing":"https://wrightresearch.smallcase.com/smallcase/WRTNM_0003",
+            "Wright Research | Balanced 🎯 Multi Factor":"https://wrightresearch.smallcase.com/smallcase/WRTMO_0003",
+            "Wright Research | Wright 🌱 Smallcaps":"https://wrightresearch.smallcase.com/smallcase/WRTMO_0007",
             "Niveshaay | Green Energy": "https://niveshaay.smallcase.com/smallcase/NIVTR_0001",
             "Niveshaay | Trends Trilogy": "https://niveshaay.smallcase.com/smallcase/NIVMO_0004",
             "Niveshaay | Make In India": "https://niveshaay.smallcase.com/smallcase/NIVNM_0001",
