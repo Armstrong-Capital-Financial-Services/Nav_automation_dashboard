@@ -28,7 +28,8 @@ raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO
             "Niveshaay | Make In India": "https://niveshaay.smallcase.com/smallcase/NIVNM_0001",
             "Niveshaay | Mid and Small Cap Focused Portfolio": "https://niveshaay.smallcase.com/smallcase/NIVMO_0001",
             "Niveshaay | Niveshaay Consumer Trends Portfolio": "https://niveshaay.smallcase.com/smallcase/NIVNM_0002",
-            "Marcellus | Marcellus MeritorQ- Fixed Fee plan":"https://marcellus.smallcase.com/smallcase/MCELMO_0003"}
+            "Marcellus | Marcellus MeritorQ- Fixed Fee plan":"https://marcellus.smallcase.com/smallcase/MCELMO_0003",
+             "Marcellus | Marcellus MeritorQ- AuA based Fee plan":"https://marcellus.smallcase.com/smallcase/MCELMO_0008"}
 
 def get_unique_names():
     unique_names = set()
