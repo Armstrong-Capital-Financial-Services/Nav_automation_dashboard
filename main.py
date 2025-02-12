@@ -31,7 +31,16 @@ raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO
             "Marcellus | Marcellus MeritorQ- Fixed Fee plan":"https://marcellus.smallcase.com/smallcase/MCELMO_0003",
              "Marcellus | Marcellus MeritorQ- AuA based Fee plan":"https://marcellus.smallcase.com/smallcase/MCELMO_0008",
              "Omniscience Capital | Omni Bharat Defence":"https://omniscience.smallcase.com/smallcase/OMNNM_0012",
-             "Omniscience Capital | Omni Capital Enablers":"https://omniscience.smallcase.com/smallcase/OMNNM_0003", }
+             "Omniscience Capital | Omni Capital Enablers":"https://omniscience.smallcase.com/smallcase/OMNNM_0003",
+              "Omniscience Capital | Omni Power - Electrifying India":"https://omniscience.smallcase.com/smallcase/OMNNM_0004",
+              "Omniscience Capital | Omni Bullet Train-Great Indian Railways":"https://omniscience.smallcase.com/smallcase/OMNMO_0006",
+              "Omniscience Capital | Omni Super Dividend - High Income Portfolio":"https://omniscience.smallcase.com/smallcase/OMNMO_0005",
+               "Omniscience Capital | Omni UP Rising":"https://omniscience.smallcase.com/smallcase/OMNNM_0023",
+               "Omniscience Capital | Omni DX - Digital Transformation":"https://omniscience.smallcase.com/smallcase/OMNNM_0001",
+               "Omniscience Capital | Omni Future of Mobility":"omniscience.smallcase.com/smallcase/OMNMO_0018",
+                "Omniscience Capital | Omni Bharat Amrit Kaal":"https://omniscience.smallcase.com/smallcase/OMNNM_0010",
+               "Omniscience Capital | Omni Royals - SuperNormal LargeCap":"https://omniscience.smallcase.com/smallcase/OMNMO_0002",
+               "Omniscience Capital | Omni AI-Tech Global - Artificial Intelligence":"https://omniscience.smallcase.com/smallcase/OMNNM_0006" }
 
 def get_unique_names():
     unique_names = set()
