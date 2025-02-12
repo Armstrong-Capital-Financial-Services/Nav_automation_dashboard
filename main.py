@@ -37,7 +37,7 @@ raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO
               "Omniscience Capital | Omni Super Dividend - High Income Portfolio":"https://omniscience.smallcase.com/smallcase/OMNMO_0005",
                "Omniscience Capital | Omni UP Rising":"https://omniscience.smallcase.com/smallcase/OMNNM_0023",
                "Omniscience Capital | Omni DX - Digital Transformation":"https://omniscience.smallcase.com/smallcase/OMNNM_0001",
-               "Omniscience Capital | Omni Future of Mobility":"omniscience.smallcase.com/smallcase/OMNMO_0018",
+               "Omniscience Capital | Omni Future of Mobility":"https://omniscience.smallcase.com/smallcase/OMNMO_0018",
                 "Omniscience Capital | Omni Bharat Amrit Kaal":"https://omniscience.smallcase.com/smallcase/OMNNM_0010",
                "Omniscience Capital | Omni Royals - SuperNormal LargeCap":"https://omniscience.smallcase.com/smallcase/OMNMO_0002",
                "Omniscience Capital | Omni AI-Tech Global - Artificial Intelligence":"https://omniscience.smallcase.com/smallcase/OMNNM_0006" }
