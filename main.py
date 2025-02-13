@@ -41,7 +41,8 @@ raw_dict = {"Estee | Gulaq Gear 6": "https://estee.smallcase.com/smallcase/ESTMO
                 "Omniscience Capital | Omni Bharat Amrit Kaal":"https://omniscience.smallcase.com/smallcase/OMNNM_0010",
                "Omniscience Capital | Omni Royals - SuperNormal LargeCap":"https://omniscience.smallcase.com/smallcase/OMNMO_0002",
                "Omniscience Capital | Omni AI-Tech Global - Artificial Intelligence":"https://omniscience.smallcase.com/smallcase/OMNNM_0006",
-               "Omniscience Capital | Omni Bank on Bharat":"https://omniscience.smallcase.com/smallcase/OMNNM_0021"}
+               "Omniscience Capital | Omni Bank on Bharat":"https://omniscience.smallcase.com/smallcase/OMNNM_0021",
+           "":"https://publisher.smallcase.com/smallcase/OMNMO_0022"}
 
 def get_unique_names():
     unique_names = set()
