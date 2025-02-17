@@ -42,6 +42,7 @@ raw_dict = {"Estee | Gulaq Gear 6 Quant": "https://estee.smallcase.com/smallcase
                "Omniscience Capital | Omni Royals - SuperNormal LargeCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0002",
                "Omniscience Capital | Omni AI-Tech Global Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0006",
                "Omniscience Capital | Omni Bank on Bharat Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0021",
+               "Omniscience Capital | Omni FinTech, Digital Banking & Payments Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0009"
           }
 
 def get_unique_names():
