@@ -30,6 +30,7 @@ raw_dict = {"Estee | Gulaq Gear 6 Quant": "https://estee.smallcase.com/smallcase
             "Niveshaay | Mid and Small Cap Focused Portfolio Fundamental": "https://niveshaay.smallcase.com/smallcase/NIVMO_0001",
             "Niveshaay | Niveshaay Consumer Trends Portfolio Theme": "https://niveshaay.smallcase.com/smallcase/NIVNM_0002",
             "Marcellus | Marcellus MeritorQ- Fixed Fee plan Quant":"https://marcellus.smallcase.com/smallcase/MCELMO_0003",
+            "Marcellus | Marcellus MeritorQ- AuA based Fee plan Quant":"https://marcellus.smallcase.com/smallcase/MCELMO_0008",
              "Omniscience Capital | Omni Bharat Defence Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0012",
              "Omniscience Capital | Omni Capital Enablers Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0003",
               "Omniscience Capital | Omni Power Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0004",
@@ -43,8 +44,9 @@ raw_dict = {"Estee | Gulaq Gear 6 Quant": "https://estee.smallcase.com/smallcase
                "Omniscience Capital | Omni AI-Tech Global Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0006",
                "Omniscience Capital | Omni Bank on Bharat Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0021",
                "Omniscience Capital | Omni FinTech, Digital Banking & Payments Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0009",
-               "Omniscience Capital | Omni Knights - SuperNormal MidCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0003"
-          }
+               "Omniscience Capital | Omni Knights - SuperNormal MidCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0003",
+               "Omniscience Capital | Omni SuperStox - SuperNormal FlexiCaps Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0001",
+               "Omniscience Capital | Omni Royals - SuperNormal LargeCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0002",}
 
 def get_unique_names():
     unique_names = set()
