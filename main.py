@@ -33,20 +33,20 @@ raw_dict = {"Estee | Gulaq Gear 6 Quant": "https://estee.smallcase.com/smallcase
             "Marcellus | Marcellus MeritorQ- AuA based Fee plan Quant":"https://marcellus.smallcase.com/smallcase/MCELMO_0008",
              "Omniscience Capital | Omni Bharat Defence Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0012",
              "Omniscience Capital | Omni Capital Enablers Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0018",
-              "Omniscience Capital | Omni Power Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0004",
-              "Omniscience Capital | Omni Bullet Train Theme":"https://omniscience.smallcase.com/smallcase/OMNMO_0006",
-              "Omniscience Capital | Omni Super Dividend Theme":"https://omniscience.smallcase.com/smallcase/OMNMO_0005",
-               "Omniscience Capital | Omni UP Rising Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0023",
-               "Omniscience Capital | Omni DX Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0001",
+              "Omniscience Capital | Omni Power Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0013",
+              "Omniscience Capital | Omni Bullet Train Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0011",
+              "Omniscience Capital | Omni Super Dividend Theme":"https://omniscience.smallcase.com/smallcase/OMNMO_0024",
+               "Omniscience Capital | Omni UP Rising Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0024",
+               "Omniscience Capital | Omni DX Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0017",
                "Omniscience Capital | Omni Future of Mobility Theme":"https://omniscience.smallcase.com/smallcase/OMNMO_0018",
-                "Omniscience Capital | Omni Bharat Amrit Kaal Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0010",
+                "Omniscience Capital | Omni Bharat Amrit Kaal Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0020",
                "Omniscience Capital | Omni Royals - SuperNormal LargeCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0002",
                "Omniscience Capital | Omni AI-Tech Global Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0006",
-               "Omniscience Capital | Omni Bank on Bharat Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0021",
+               "Omniscience Capital | Omni Bank on Bharat Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0022",
                "Omniscience Capital | Omni FinTech, Digital Banking & Payments Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0009",
-               "Omniscience Capital | Omni Knights - SuperNormal MidCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0003",
-               "Omniscience Capital | Omni SuperStox - SuperNormal FlexiCaps Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0001",
-               "Omniscience Capital | Omni Supertrons - SuperNormal SmallCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0004",}
+               "Omniscience Capital | Omni Knights - SuperNormal MidCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0021",
+               "Omniscience Capital | Omni SuperStox - SuperNormal FlexiCaps Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0025",
+               "Omniscience Capital | Omni Supertrons - SuperNormal SmallCap Fundamental":"https://omniscience.smallcase.com/smallcase/OMNMO_0022",}
 
 def get_unique_names():
     unique_names = set()
