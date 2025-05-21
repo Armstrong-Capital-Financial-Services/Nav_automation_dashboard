@@ -32,7 +32,7 @@ raw_dict = {"Estee | Gulaq Gear 6 Quant": "https://estee.smallcase.com/smallcase
             "Marcellus | Marcellus MeritorQ- Fixed Fee plan Quant":"https://marcellus.smallcase.com/smallcase/MCELMO_0003",
             "Marcellus | Marcellus MeritorQ- AuA based Fee plan Quant":"https://marcellus.smallcase.com/smallcase/MCELMO_0008",
              "Omniscience Capital | Omni Bharat Defence Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0012",
-             "Omniscience Capital | Omni Capital Enablers Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0003",
+             "Omniscience Capital | Omni Capital Enablers Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0018",
               "Omniscience Capital | Omni Power Theme":"https://omniscience.smallcase.com/smallcase/OMNNM_0004",
               "Omniscience Capital | Omni Bullet Train Theme":"https://omniscience.smallcase.com/smallcase/OMNMO_0006",
               "Omniscience Capital | Omni Super Dividend Theme":"https://omniscience.smallcase.com/smallcase/OMNMO_0005",
